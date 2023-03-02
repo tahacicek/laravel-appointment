@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function getWorkingHours()
+    public function getWorkingHours($date = '')
     {
-        $date = date('Y-m-d');
+        $date = $date == '' ? date('Y-m-d') : $date;
         $returnArray = [];
         $hours = \App\Models\WorkingHours::all();
         foreach ($hours as $hour => $value) {

@@ -45,29 +45,35 @@
             </div>
             <div class="form-group mb-3">
               <label for="name">Randevu Tarihi</label>
-              <input type="date" @change="selectDate" class="form-control" id="date" model="date" />
+              <input
+                type="date"
+                @change="selectDate"
+                class="form-control"
+                id="date"
+                model="date"
+              />
             </div>
             <!-- Some borders are removed -->
             <div class="list-group">
-              <label v-for="hours in workingHours" class="list-group-item">
+              <div v-for="hours in workingHours" class="list-group-item">
                 <div class="form-check">
                   <input
                     class="form-check-input"
                     type="radio"
                     model="hour"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
+                    :id="hours.hour"
+                    :value="hours.hour"
                   />
-                  <label class="form-check-label" for="flexRadioDefault1">
+                  <label class="form-check-label" :for="hours.hour">
                     {{ hours.hour }}
                   </label>
                 </div>
-              </label>
-            </div>
-              <div class="form-group mb-3 mt-2">
-                <label for="name">Mesajınız</label>
-                <textarea class="form-control" model="text" id="text"  rows="5"></textarea>
               </div>
+            </div>
+            <div class="form-group mb-3 mt-2">
+              <label for="name">Mesajınız</label>
+              <textarea class="form-control" model="text" id="text" rows="5"></textarea>
+            </div>
           </div>
           <div class="card-footer col-md-12">
             <button @click="store" class="btn btn-primary float-end">Randevu Al</button>
@@ -86,9 +92,9 @@ export default {
       name: "",
       email: "",
       phone: "",
-      date: new Date().toISOString().substr(0, 10),
+      date: new Date().toISOString().slice(0, 10),
       text: "",
-      workingHours: []
+      workingHours: [],
     };
   },
   methods: {
@@ -96,7 +102,10 @@ export default {
       console.log(date);
     },
     selectDate() {
-        console.log('date');
+      axios.get(`/api/working-hours/${this.date}`).then((response) => {
+        console.log(response.data);
+        this.workingHours = response.data;
+      });
     },
   },
   mounted() {
