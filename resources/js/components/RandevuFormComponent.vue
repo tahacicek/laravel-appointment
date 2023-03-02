@@ -17,25 +17,31 @@
                 model="name"
               />
             </div>
-            <div class="form-group mb-3">
-              <label for="name">E-Posta</label>
-              <input
-                type="text"
-                class="form-control"
-                id="email"
-                placeholder="E-Postanızı Giriniz"
-                model="email"
-              />
-            </div>
-            <div class="form-group mb-3">
-              <label for="name">Telefon No</label>
-              <input
-                type="text"
-                class="form-control"
-                id="phone"
-                placeholder="Telefon Numarınızı Giriniz"
-                model="phone"
-              />
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="name">E-Posta</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    placeholder="E-Postanızı Giriniz"
+                    model="email"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="name">Telefon No</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    placeholder="Telefon Numarınızı Giriniz"
+                    model="phone"
+                  />
+                </div>
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="name">Randevu Tarihi</label>
@@ -52,7 +58,7 @@
                     id="flexRadioDefault1"
                   />
                   <label class="form-check-label" for="flexRadioDefault1">
-                    Default radio
+                    10:00 - 10:30
                   </label>
                 </div>
               </label>
@@ -65,7 +71,7 @@
                     id="flexRadioDefault1"
                   />
                   <label class="form-check-label" for="flexRadioDefault1">
-                    Default radio
+                    11:00 - 11:30
                   </label>
                 </div>
               </label>
@@ -78,7 +84,7 @@
                     id="flexRadioDefault1"
                   />
                   <label class="form-check-label" for="flexRadioDefault1">
-                    Default radio
+                    12:00 - 12:30
                   </label>
                 </div>
               </label>
@@ -91,11 +97,18 @@
                     id="flexRadioDefault1"
                   />
                   <label class="form-check-label" for="flexRadioDefault1">
-                    Default radio
+                    13:00 - 13:30
                   </label>
                 </div>
               </label>
             </div>
+              <div class="form-group mb-3 mt-2">
+                <label for="name">Mesajınız</label>
+                <textarea class="form-control" model="text" id="text"  rows="5"></textarea>
+              </div>
+          </div>
+          <div class="card-footer col-md-12">
+            <button @click="store" class="btn btn-primary float-end">Randevu Al</button>
           </div>
         </div>
       </div>
@@ -110,7 +123,14 @@ export default {
       name: "",
       email: "",
       phone: "",
+      date: new Date().toISOString().substr(0, 10),
+      text: "",
     };
+  },
+  methods: {
+    store() {
+      console.log(date);
+    },
   },
   mounted() {
     console.log("Component mounted.");
