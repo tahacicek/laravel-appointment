@@ -45,59 +45,21 @@
             </div>
             <div class="form-group mb-3">
               <label for="name">Randevu Tarihi</label>
-              <input type="date" class="form-control" id="date" model="date" />
+              <input type="date" @change="selectDate" class="form-control" id="date" model="date" />
             </div>
             <!-- Some borders are removed -->
             <div class="list-group">
-              <label class="list-group-item">
+              <label v-for="hours in workingHours" class="list-group-item">
                 <div class="form-check">
                   <input
                     class="form-check-input"
                     type="radio"
+                    model="hour"
                     name="flexRadioDefault"
                     id="flexRadioDefault1"
                   />
                   <label class="form-check-label" for="flexRadioDefault1">
-                    10:00 - 10:30
-                  </label>
-                </div>
-              </label>
-              <label class="list-group-item">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    11:00 - 11:30
-                  </label>
-                </div>
-              </label>
-              <label class="list-group-item">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    12:00 - 12:30
-                  </label>
-                </div>
-              </label>
-              <label class="list-group-item">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    13:00 - 13:30
+                    {{ hours.hour }}
                   </label>
                 </div>
               </label>
@@ -120,20 +82,27 @@
 export default {
   data() {
     return {
+      hour: "",
       name: "",
       email: "",
       phone: "",
       date: new Date().toISOString().substr(0, 10),
       text: "",
+      workingHours: []
     };
   },
   methods: {
     store() {
       console.log(date);
     },
+    selectDate() {
+        console.log('date');
+    },
   },
   mounted() {
-    console.log("Component mounted.");
+    axios.get("/api/working-hours").then((response) => {
+      this.workingHours = response.data;
+    });
   },
 };
 </script>
