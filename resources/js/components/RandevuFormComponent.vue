@@ -7,6 +7,13 @@
             <h5>Randevu Formu</h5>
           </div>
           <div class="card-body">
+            <div v-if="errors.length > 0" class="alert alert-danger">
+              <ul>
+                <li v-for="error in errors" :key="error">
+                  {{ error }}
+                </li>
+              </ul>
+            </div>
             <div class="form-group mb-3">
               <label for="name">Ad Soyad</label>
               <input
@@ -34,11 +41,12 @@
                 <div class="form-group mb-3">
                   <label for="name">Telefon No</label>
                   <input
-                    type="text"
+                    type="tel"
                     class="form-control"
                     id="phone"
-                    placeholder="Telefon Numarınızı Giriniz"
+                    placeholder="90 555 555 55 55"
                     model="phone"
+                    v-mask="'+##-(###)-###-####'"
                   />
                 </div>
               </div>
@@ -88,18 +96,49 @@
 export default {
   data() {
     return {
-      hour: "",
-      name: "",
-      email: "",
-      phone: "",
+      errors: [],
+      hour: 0,
+      name: null,
+      email: null,
+      phone: null,
       date: new Date().toISOString().slice(0, 10),
-      text: "",
+      text: null,
       workingHours: [],
     };
   },
   methods: {
     store() {
-      console.log(date);
+      if (this.name && this.email && this.phone && this.hour) {
+        console.log('form ready');
+      }
+      this.errors = [];
+      if (!this.name) {
+        this.errors.push("Ad Soyad alanı boş bırakılamaz.");
+      }
+
+      if (!this.email) {
+        this.errors.push("E-Posta alanı boş bırakılamaz.");
+      }
+
+      if (!this.phone) {
+        this.errors.push("Telefon alanı boş bırakılamaz.");
+      }
+
+      if (!this.date) {
+        this.errors.push("Randevu Tarihi alanı boş bırakılamaz.");
+      }
+
+      if (!this.hour) {
+        this.errors.push("Randevu Saati alanı boş bırakılamaz.");
+      }
+
+        if (!this.text) {
+            this.errors.push("Mesaj alanı boş bırakılamaz.");
+        }
+
+        if (!this.errors.length) {
+           this.errors.push("Randevu başarıyla alındı.");
+        }
     },
     selectDate() {
       axios.get(`/api/working-hours/${this.date}`).then((response) => {

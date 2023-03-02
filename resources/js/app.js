@@ -3,9 +3,9 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 import './bootstrap';
 import { createApp } from 'vue';
+import VueTheMask from 'vue-the-mask'
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -44,4 +44,4 @@ app.component('example-component', ExampleComponent);
  */
 
 app.mount('#app');
-app
+app.use(VueTheMask)
