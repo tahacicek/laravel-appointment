@@ -25,4 +25,27 @@ class IndexController extends Controller
         }
         return response()->json($returnArray);
     }
+
+    public function appointmentStore(Request $request)
+    {
+        $returnArray = [];
+        $returnArray['status'] = 'false';
+        $all = $request->except('_token');
+        $control = Appointment::where('date', $all['date'])->where('time_id', $all['time_id'])->count();
+
+        if ($control > 0) {
+            $returnArray['message'] = 'Bu randevu saati dolu';
+            return response()->json($returnArray);
+        }
+
+        $create = Appointment::create($all);
+        if ($create) {
+            $returnArray['status'] = 'true';
+            $returnArray['message'] = 'Randevu başarıyla oluşturuldu';
+            return response()->json($returnArray);
+        } else {
+            $returnArray['message'] = 'Randevu oluşturulamadı, Lütfen iletişime geçin';
+            return response()->json($returnArray);
+        }
+    }
 }

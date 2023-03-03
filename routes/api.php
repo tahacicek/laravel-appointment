@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
     Route::get('working-hours/{date?}', [IndexController::class, 'getWorkingHours']);
+    Route::post('appointment-store', [IndexController::class, 'appointmentStore']);

@@ -19,9 +19,9 @@
               <input
                 type="text"
                 class="form-control"
-                id="name"
+                name="name"
                 placeholder="Adınızı Soyadınızı Giriniz"
-                model="name"
+                v-model="name"
               />
             </div>
             <div class="row">
@@ -33,7 +33,7 @@
                     class="form-control"
                     id="email"
                     placeholder="E-Postanızı Giriniz"
-                    model="email"
+                    v-model="email"
                   />
                 </div>
               </div>
@@ -45,7 +45,7 @@
                     class="form-control"
                     id="phone"
                     placeholder="90 555 555 55 55"
-                    model="phone"
+                    v-model="phone"
                     v-mask="'+##-(###)-###-####'"
                   />
                 </div>
@@ -58,7 +58,7 @@
                 @change="selectDate"
                 class="form-control"
                 id="date"
-                model="date"
+                v-model="date"
               />
             </div>
             <!-- Some borders are removed -->
@@ -68,7 +68,7 @@
                   <input
                     class="form-check-input"
                     type="radio"
-                    model="hour"
+                    v-model="hour"
                     :id="hours.hour"
                     :value="hours.hour"
                   />
@@ -109,17 +109,23 @@ export default {
   methods: {
     store() {
       if (this.name && this.email && this.phone && this.hour) {
-        console.log('form ready');
+        console.log("form ready");
       }
       this.errors = [];
       if (!this.name) {
         this.errors.push("Ad Soyad alanı boş bırakılamaz.");
+      } else if (this.name.length < 5) {
+        this.errors.push("Ad Soyad alanı en az 5 karakter olmalıdır.");
+      } else if (this.name.length > 50) {
+        this.errors.push("Ad Soyad alanı en fazla 50 karakter olmalıdır.");
+      } else if (!this.name.match(/^[a-zA-Z ]*$/)) {
+        this.errors.push("Ad Soyad alanı sadece harf içermelidir.");
       }
-
       if (!this.email) {
         this.errors.push("E-Posta alanı boş bırakılamaz.");
+      }else if (!this.email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
+        this.errors.push("E-Posta alanı geçerli bir e-posta adresi olmalıdır.");
       }
-
       if (!this.phone) {
         this.errors.push("Telefon alanı boş bırakılamaz.");
       }
@@ -131,14 +137,6 @@ export default {
       if (!this.hour) {
         this.errors.push("Randevu Saati alanı boş bırakılamaz.");
       }
-
-        if (!this.text) {
-            this.errors.push("Mesaj alanı boş bırakılamaz.");
-        }
-
-        if (!this.errors.length) {
-           this.errors.push("Randevu başarıyla alındı.");
-        }
     },
     selectDate() {
       axios.get(`/api/working-hours/${this.date}`).then((response) => {
