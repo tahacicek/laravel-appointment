@@ -41,12 +41,11 @@
                 <div class="form-group mb-3">
                   <label for="name">Telefon No</label>
                   <input
-                    type="tel"
+                    type="text"
                     class="form-control"
                     id="phone"
-                    placeholder="90 555 555 55 55"
                     v-model="phone"
-                    v-mask="'+##-(###)-###-####'"
+                    placeholder="Telefon Numaranızı Giriniz"
                   />
                 </div>
               </div>
@@ -109,7 +108,14 @@ export default {
   methods: {
     store() {
       if (this.name && this.email && this.phone && this.hour) {
-        console.log("form ready");
+        axios.post("/api/appointment-store", {
+          full_name: this.name,
+          email: this.email,
+          phone: this.phone,
+          date: this.date,
+          time_id: this.hour.id,
+          message: this.text,
+        });
       }
       this.errors = [];
       if (!this.name) {
@@ -123,7 +129,7 @@ export default {
       }
       if (!this.email) {
         this.errors.push("E-Posta alanı boş bırakılamaz.");
-      }else if (!this.email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
+      } else if (!this.email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
         this.errors.push("E-Posta alanı geçerli bir e-posta adresi olmalıdır.");
       }
       if (!this.phone) {
@@ -140,7 +146,6 @@ export default {
     },
     selectDate() {
       axios.get(`/api/working-hours/${this.date}`).then((response) => {
-        console.log(response.data);
         this.workingHours = response.data;
       });
     },

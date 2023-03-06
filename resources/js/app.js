@@ -45,3 +45,6 @@ app.component('example-component', ExampleComponent);
 
 app.mount('#app');
 app.use(VueTheMask)
+export default {
+    components: {VueTheMask}
+  }
